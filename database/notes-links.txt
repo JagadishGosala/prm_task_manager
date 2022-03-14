@@ -1,0 +1,5 @@
+Postman link (Rest requests) - https://www.getpostman.com/collections/99221cbca3f96a2288ef
+
+Github Task manager Backend API (development) - https://github.com/JagadishGosala/prm_task_manager-api/tree/fedevelop
+
+Github Task manager frontend (development) - https://github.com/JagadishGosala/task_manager_frontend/tree/develop

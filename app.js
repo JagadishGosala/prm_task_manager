@@ -97,6 +97,63 @@ app.delete('/tasklists/:taskListId', (req,res)=>{
         })
 })
 
+//Tasklist crud operations are done
+//Tasks operations are below
+
+//GET - Read all tasks in a tasklist
+app.get('/tasklists/:taskListId/tasks', (req,res)=>{
+    task.find({})
+        .then((tasks) => {
+            res.status(200);
+            res.send(tasks)
+        })
+        .catch((error)=> {
+            res.status(500);
+            console.log(error);
+        })
+})
+//Create new tasks
+app.post('/tasklists/:taskListId/tasks', (req,res)=>{
+    let taskObj = {'title': req.body.title, '_tasklistId': req.params.taskListId }
+    task(taskObj).save()
+        .then((tasks) => {
+            res.status(201);
+            res.send(tasks)
+        })
+        .catch((error)=> {
+            res.status(500);
+            console.log(error);
+        })
+})
+
+//Update a task
+app.patch('/tasklists/:taskListId/tasks/:tasksId', (req,res)=>{
+    task.findOneAndUpdate({_tasklistId: req.params.taskListId, _id: req.params.tasksId}, {$set: req.body})
+        .then((tasks) => {
+            res.status(201);
+            res.send(tasks)
+        })
+        .catch((error)=> {
+            res.status(500);
+            console.log(error);
+        })
+})
+
+//Delete a task
+
+app.delete('/tasklists/:taskListId/tasks/:tasksId', (req,res)=>{
+    task.findOneAndDelete({_tasklistId: req.params.taskListId, _id: req.params.tasksId})
+        .then((tasks) => {
+            res.status(201);
+            res.send(tasks)
+        })
+        .catch((error)=> {
+            res.status(500);
+            console.log(error);
+        })
+})
+
+
 app.listen(3000, ()=> {
     console.log("Listening on 3000");
 })
