@@ -86,15 +86,26 @@ app.patch('/tasklists/:taskListId',(req,res)=>{
         })
 })
 app.delete('/tasklists/:taskListId', (req,res)=>{
-    taskList.findOneAndDelete({_id: req.params.taskListId})
+    //Function to delete all tasks inside that tasklist
+    const deleteAllTasks = (taskListdelete)=> {
+        task.deleteMany({_tasklistId: req.params.taskListId})
+            .then(()=> {
+                return (taskListdelete)
+            })
+            .catch((error) => {
+                res.status(500);
+                console.log(error);
+            })
+    }
+    const deletetasklist = taskList.findOneAndDelete({_id: req.params.taskListId})
         .then((tasklists)=>{
-            res.status(201);
-            res.send(tasklists)
+            deleteAllTasks(tasklists);
         })
         .catch((error)=>{
-            res.status(500);
-            res.send(error)
+            console.log(error)
         })
+    res.status(200);
+    res.send(deletetasklist);
 })
 
 //Tasklist crud operations are done
@@ -102,7 +113,7 @@ app.delete('/tasklists/:taskListId', (req,res)=>{
 
 //GET - Read all tasks in a tasklist
 app.get('/tasklists/:taskListId/tasks', (req,res)=>{
-    task.find({})
+    task.find({_tasklistId: req.params.taskListId})
         .then((tasks) => {
             res.status(200);
             res.send(tasks)
